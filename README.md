@@ -122,3 +122,6 @@ Hay que completar los siguientes detalles:
     - <b>test...()</b>
     
 - Dentro del sub-paquete <b>modelo.test</b>, crear las clases ...test para cada clase del <b>.modelo</b>, de <b>.accesoDatos</b>, <b>.accesoUsr</b> y <b>.util</b>.
+
+## UML
+![alt_text](https://github.com/RamonMR95/Prototipo2.0/blob/master/img/modelo2.0-Dise%C3%B1oClases%20(ControlarAcceso)(Simulacion).jpg)
