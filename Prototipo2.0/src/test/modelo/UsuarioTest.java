@@ -101,7 +101,7 @@ public class UsuarioTest {
 	@Test
 	public void testUsuarioDefecto() {
 		try {
-			assertEquals(usuario2.getNif(), new Nif("00000001R"));
+			assertEquals(usuario2.getNif(), new Nif("00000000T"));
 			assertEquals(usuario2.getNombre(), "Nombre");
 			assertEquals(usuario2.getApellidos(), "Apellido Apellido");
 			assertEquals(usuario2.getDireccionPostal(),new DireccionPostal("calle", "numero", "CP", "poblacion"));
@@ -245,15 +245,17 @@ public class UsuarioTest {
 
 	@Test
 	public void testToString() {
+		System.out.println(usuario1.toString());
 		assertEquals(usuario1.toString(), 
-				"nif:             0000001R\n" +
+				"nif:             00000000T\n" +
 				"nombre:          Luis\n" +
 				"apellidos:       Roca Mora\n" +
 				"domicilio:       Roncal, 10, 30130, Murcia\n" +
 				"correo:          luis@gmail.com\n" +
 				"fechaNacimiento: 2000.3.21\n" +
+				"idUsr:           LRM0T\n"	+
 				"fechaAlta:       2018.10.17\n" +
-				"claveAcceso:     Miau#0\n" +
+				"claveAcceso:     ǝǹǱȅƳǀ\n" +
 				"rol:             NORMAL\n"
 			);
 	}

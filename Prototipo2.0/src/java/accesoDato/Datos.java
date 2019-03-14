@@ -28,7 +28,7 @@ public class Datos {
 	// USUARIO
 
 	/**
-	 * @param clave Key del mapa de equivalencias entre NIF, correo e idUsr
+	 * @param clave - Key del mapa de equivalencias entre NIF, correo e idUsr
 	 * @return El valor que le corresponde a dicha clave
 	 */
 	public String getEquivalenciaId(String clave) {
@@ -122,7 +122,7 @@ public class Datos {
 		int posicionInsercion = indexSortUsuario(usr.getIdUsr());
 
 		if (posicionInsercion < 0) {
-			datosUsuarios.add(Math.abs(posicionInsercion - 1), usr);
+			datosUsuarios.add(Math.abs(posicionInsercion) - 1, usr);
 			registrarEquivalenciasId(usr);
 		} else {
 			if (!datosUsuarios.get(posicionInsercion - 1).equals(usr)) {
@@ -155,11 +155,10 @@ public class Datos {
 			}
 			intentos--;
 
-		} while (intentos > 0);
+		} while (intentos >= 0);
 
-		if (intentos == 0) {
-			throw new DatosException("Error imposible generar variante");
-		}
+		throw new DatosException("Error imposible generar variante");
+
 	}
 
 	/**
@@ -201,7 +200,7 @@ public class Datos {
 		int posicionInsercion = indexSortSesiones(sesion.getIdSesion());
 
 		if (posicionInsercion < 0) {
-			datosSesiones.add(Math.abs(posicionInsercion - 1), sesion);
+			datosSesiones.add(Math.abs(posicionInsercion) - 1, sesion);
 		} else {
 			throw new DatosException("Alta Sesion: ya existe");
 		}
@@ -282,7 +281,7 @@ public class Datos {
 		int posicionInsercion = indexSortSimulacion(simulacion.getIdSimulacion());
 
 		if (posicionInsercion < 0) {
-			datosSimulaciones.add(Math.abs(posicionInsercion - 1), simulacion);
+			datosSimulaciones.add(Math.abs(posicionInsercion) - 1, simulacion);
 
 		} else {
 			throw new DatosException("Alta Simulacion: ya existe");
@@ -342,11 +341,16 @@ public class Datos {
 			sb.append(delimitadorAtribUsrApertura).append(usr.getNif().getNifTexto()).append(delimitadorAtribUsrCierre);
 			sb.append(delimitadorAtribUsrApertura).append(usr.getNombre()).append(delimitadorAtribUsrCierre);
 			sb.append(delimitadorAtribUsrApertura).append(usr.getApellidos()).append(delimitadorAtribUsrCierre);
-			sb.append(delimitadorAtribUsrApertura).append(usr.getDireccionPostal().toString()).append(delimitadorAtribUsrCierre);
-			sb.append(delimitadorAtribUsrApertura).append(usr.getCorreo().getCorreoTexto()).append(delimitadorAtribUsrCierre);
-			sb.append(delimitadorAtribUsrApertura).append(usr.getFechaNacimiento().toString()).append(delimitadorAtribUsrCierre);
-			sb.append(delimitadorAtribUsrApertura).append(usr.getFechaAlta().toString()).append(delimitadorAtribUsrCierre);
-			sb.append(delimitadorAtribUsrApertura).append(usr.getClaveAcceso().getTexto()).append(delimitadorAtribUsrCierre);
+			sb.append(delimitadorAtribUsrApertura).append(usr.getDireccionPostal().toString())
+					.append(delimitadorAtribUsrCierre);
+			sb.append(delimitadorAtribUsrApertura).append(usr.getCorreo().getCorreoTexto())
+					.append(delimitadorAtribUsrCierre);
+			sb.append(delimitadorAtribUsrApertura).append(usr.getFechaNacimiento().toString())
+					.append(delimitadorAtribUsrCierre);
+			sb.append(delimitadorAtribUsrApertura).append(usr.getFechaAlta().toString())
+					.append(delimitadorAtribUsrCierre);
+			sb.append(delimitadorAtribUsrApertura).append(usr.getClaveAcceso().getTexto())
+					.append(delimitadorAtribUsrCierre);
 			sb.append(delimitadorAtribUsrApertura).append(usr.getRol()).append(delimitadorAtribUsrCierre);
 			sb.append(delimitadorUsrCierre);
 
@@ -439,7 +443,7 @@ public class Datos {
 		int posicionInsercion = indexSortMundo(mundo.getId());
 
 		if (posicionInsercion < 0) {
-			datosMundos.add(Math.abs(posicionInsercion - 1), mundo);
+			datosMundos.add(Math.abs(posicionInsercion) - 1, mundo);
 		} else {
 			throw new DatosException("Error Mundo: nombre repetido");
 
@@ -453,8 +457,7 @@ public class Datos {
 	 */
 	public void cargarMundoDemo() throws DatosException {
 		Mundo mundo = new Mundo();
-		mundo.setEspacio(new byte[][]
-			  { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+		mundo.setEspacio(new byte[][] { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -472,7 +475,7 @@ public class Datos {
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } });
-		
+
 		altaMundo(mundo);
 	}
 
