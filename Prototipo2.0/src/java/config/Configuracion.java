@@ -1,7 +1,7 @@
 package config;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 
 /** Proyecto: Juego de la vida.
@@ -14,31 +14,28 @@ import java.util.Properties;
 
 public class Configuracion {
 
-	private static Configuracion configuracion = null;
-	private Properties properties;
+	private static Properties propiedades;
 
 	private Configuracion() {
-		properties = new Properties();
+		propiedades = new Properties();
 		FileInputStream is = null;
+	
 
 		try {
-			is = new FileInputStream("Config.cfg");
+			is = new FileInputStream("config.cfg");
+			propiedades.load(is);
 
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public static Configuracion getSingleton() {
-		if (configuracion == null) {
+	public static Properties get() {
+		if (propiedades == null) {
 			new Configuracion();
 
 		}
-		return configuracion;
-	}
-	
-	public Properties getPropiedades() {
-		return properties;
+		return propiedades;
 	}
 }

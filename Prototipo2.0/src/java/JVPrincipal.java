@@ -32,6 +32,12 @@ public class JVPrincipal {
 
 	public static void main(String[] args) {
 		
+//		ConfiguracionSingletonCanonico config;
+//		
+//		config = ConfiguracionSingletonCanonico.get();
+//		int edad = config.getEdadMinima();
+//		System.out.println("Edad " + edad);
+		
 		try {
 			datos = new Datos();
 			interfazUsr = new Presentacion();

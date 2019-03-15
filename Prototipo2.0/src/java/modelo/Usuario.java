@@ -1,6 +1,6 @@
 package modelo;
 
-import config.Configuracion;
+import config.ConfiguracionSingletonCanonico;
 import util.Fecha;
 
 /** Proyecto: Juego de la vida.
@@ -23,6 +23,7 @@ public class Usuario extends Persona{
 	private ClaveAcceso claveAcceso;
 	private RolUsuario rol;
 	public enum RolUsuario { INVITADO, NORMAL, ADMINSTRADOR };
+	private static ConfiguracionSingletonCanonico config = ConfiguracionSingletonCanonico.get();
 
 	/**
 	 * Constructor convencional. Utiliza métodos set...()
@@ -53,7 +54,7 @@ public class Usuario extends Persona{
 	 */
 	public Usuario() throws ModeloException {
 		this(new Nif(), "Nombre", "Apellido Apellido", new DireccionPostal(), new Correo(),
-				new Fecha().addAños(2),
+				new Fecha().addAños(-config.getEdadMinima()),
 				new Fecha(), new ClaveAcceso(), RolUsuario.NORMAL);
 
 	}
@@ -143,7 +144,7 @@ public class Usuario extends Persona{
 	
 	@Override
 	protected boolean fechaNacimientoValida(Fecha fechaNacimiento) {
-		return !fechaNacimiento.after(new Fecha().addAños(2));
+		return !fechaNacimiento.after(new Fecha().addAños(-config.getEdadMinima()));
 	}
 	
 	/**

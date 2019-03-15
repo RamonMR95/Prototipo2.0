@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import config.Configuracion;
 import modelo.Usuario.RolUsuario;
 import util.Fecha;
 
@@ -100,6 +101,10 @@ public class UsuarioTest {
 
 	@Test
 	public void testUsuarioDefecto() {
+		int edadMinima = Integer.parseInt(Configuracion.get().getProperty("usuario.EdadMinima"));
+		
+		System.err.println(edadMinima);
+		
 		try {
 			assertEquals(usuario2.getNif(), new Nif("00000000T"));
 			assertEquals(usuario2.getNombre(), "Nombre");
