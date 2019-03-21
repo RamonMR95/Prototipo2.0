@@ -32,18 +32,12 @@ public class JVPrincipal {
 
 	public static void main(String[] args) {
 		
-//		ConfiguracionSingletonCanonico config;
-//		
-//		config = ConfiguracionSingletonCanonico.get();
-//		int edad = config.getEdadMinima();
-//		System.out.println("Edad " + edad);
-		
 		try {
 			datos = new Datos();
 			interfazUsr = new Presentacion();
 
 			datos.cargarUsuariosPrueba();
-			datos.mostrarTodosUsuarios();
+			System.out.println(datos.toStringTodosUsuarios());
 			datos.cargarMundoDemo();
 	
 
@@ -69,7 +63,7 @@ public class JVPrincipal {
 			System.out.println("Fin del programa.");
 			
 		} catch (ModeloException | DatosException e) {
-			
+			e.printStackTrace();
 		}
 	}
 
