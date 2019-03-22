@@ -58,12 +58,12 @@ public class UsuariosDAO implements OperacionesDAO {
 	}
 
 	@Override
-	public Object obtener(String id) {
+	public Usuario obtener(String id) {
 		assert id != null;
 		id = mapaEquivalencias.get(id);
 
 		if (id != null) {
-			int indice = indexSortUsuario(id) - 1;
+			int indice = indexSort(id) - 1;
 
 			if (indice >= 0) {
 				return datosUsuarios.get(indice);
@@ -82,7 +82,7 @@ public class UsuariosDAO implements OperacionesDAO {
 	public void alta(Object obj) throws DatosException {
 		assert obj != null;
 		Usuario usr = (Usuario) obj;
-		int posicionInsercion = indexSortUsuario(usr.getIdUsr());
+		int posicionInsercion = indexSort(usr.getIdUsr());
 
 		if (posicionInsercion < 0) {
 			datosUsuarios.add(Math.abs(posicionInsercion) - 1, usr);
@@ -99,16 +99,33 @@ public class UsuariosDAO implements OperacionesDAO {
 	}
 
 	@Override
-	public Object baja(String id) throws DatosException {
+	public Usuario baja(String id) throws DatosException {
+		assert id != null;
+		int posicion = indexSort(id);
+
+		if (posicion > 0) {
+			Usuario usrEliminado = datosUsuarios.remove(posicion - 1);
+			mapaEquivalencias.remove(usrEliminado.getIdUsr());
+			mapaEquivalencias.remove(usrEliminado.getNif().getNifTexto());
+			mapaEquivalencias.remove(usrEliminado.getCorreo().getCorreoTexto());
+			return usrEliminado;
+		}
+		else {
+			throw new DatosException("Baja : " + id + " no existe");
+		}
+	}
+
+	@Override
+	public void borrarTodo() {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
 	public void actualizar(Object obj) throws DatosException {
 		assert obj != null;
 		Usuario usrAct = (Usuario) obj;
-		int posicion = indexSortUsuario(usrAct.getIdUsr());
+		int posicion = indexSort(usrAct.getIdUsr());
 
 		if (posicion > 0) {
 			Usuario usrModificado = datosUsuarios.get(posicion - 1);
@@ -162,7 +179,7 @@ public class UsuariosDAO implements OperacionesDAO {
 	 * @param idUsr - el nif del Usuario a buscar.
 	 * @return - el Usuario encontrado o null si no existe.
 	 */
-	public int indexSortUsuario(String idUsr) {
+	public int indexSort(String idUsr) {
 		int size = datosUsuarios.size();
 		int puntoMedio;
 		int limiteInferior = 0;
@@ -198,7 +215,7 @@ public class UsuariosDAO implements OperacionesDAO {
 		do {
 			/* Coincidencia de ig generar variante */
 			usr = new Usuario(usr);
-			posicionInsercion = indexSortUsuario(usr.getIdUsr());
+			posicionInsercion = indexSort(usr.getIdUsr());
 
 			if (posicionInsercion < 0) {
 				datosUsuarios.add(-posicionInsercion, usr);
@@ -230,6 +247,21 @@ public class UsuariosDAO implements OperacionesDAO {
 			}
 		}
 
+	}
+	
+	public void cargarUsuariosPredeterminados() {
+		try {
+
+			alta(new Usuario(new Nif("00000000T"), "Admin", "Admin Admin", new DireccionPostal(), new Correo(),
+					new Fecha(0001, 01, 01), new Fecha(0001, 01, 01), new ClaveAcceso("Miau#0"),
+					RolUsuario.ADMINSTRADOR));
+
+			alta(new Usuario(new Nif("00000001R"), "Invitado", "Invitado Invitado", new DireccionPostal(), new Correo(),
+					new Fecha(0001, 01, 01), new Fecha(0001, 01, 01), new ClaveAcceso("Miau#0"), RolUsuario.INVITADO));
+		} 
+		catch (DatosException | ModeloException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

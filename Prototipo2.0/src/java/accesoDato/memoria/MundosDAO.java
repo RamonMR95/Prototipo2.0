@@ -55,7 +55,7 @@ public class MundosDAO implements OperacionesDAO{
 	public void alta(Object obj) throws DatosException {
 		assert obj != null;
 		Mundo mundo = (Mundo)obj;
-		int posicionInsercion = indexSortMundo(mundo.getId());
+		int posicionInsercion = indexSort(mundo.getId());
 
 		if (posicionInsercion < 0) {
 			datosMundos.add(Math.abs(posicionInsercion) - 1, mundo);
@@ -72,6 +72,13 @@ public class MundosDAO implements OperacionesDAO{
 		return null;
 	}
 
+
+	@Override
+	public void borrarTodo() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public void actualizar(Object obj) {
 		// TODO Auto-generated method stub
@@ -100,7 +107,7 @@ public class MundosDAO implements OperacionesDAO{
 	 * @param idUsr - el nif del Usuario a buscar.
 	 * @return - el Usuario encontrado o null si no existe.
 	 */
-	private int indexSortMundo(String idUsr) {
+	private int indexSort(String idUsr) {
 		int size = datosMundos.size();
 		int puntoMedio;
 		int limiteInferior = 0;
@@ -123,4 +130,5 @@ public class MundosDAO implements OperacionesDAO{
 		}
 		return -(limiteInferior + 1);
 	}
+
 }

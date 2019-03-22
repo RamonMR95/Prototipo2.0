@@ -43,6 +43,11 @@ public interface OperacionesDAO {
 	Object baja(String id) throws DatosException;
 	
 	/**
+	 * Elimina todos los datos y restaura predeterminados
+	 */
+	void borrarTodo();
+	
+	/**
 	 * Metodo que recibe un argumento que representa el objeto con 
 	 * las modificaciones a actualizar. 
 	 * Lanza DatosException si no existe.
@@ -62,4 +67,5 @@ public interface OperacionesDAO {
 	 * @return Texto - texto con los datos.
 	 */
 	String listarId();
+	
 }

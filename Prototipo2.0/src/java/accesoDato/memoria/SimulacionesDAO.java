@@ -55,12 +55,12 @@ public class SimulacionesDAO implements OperacionesDAO{
 	public void alta(Object obj) throws DatosException {
 		assert obj != null;
 		Simulacion simulacion = (Simulacion)obj;
-		int posicionInsercion = indexSortSimulacion(simulacion.getIdSimulacion());
+		int posicionInsercion = indexSort(simulacion.getIdSimulacion());
 
 		if (posicionInsercion < 0) {
 			datosSimulaciones.add(Math.abs(posicionInsercion) - 1, simulacion);
-
-		} else {
+		} 
+		else {
 			throw new DatosException("Alta Simulacion: ya existe");
 		}
 		
@@ -71,10 +71,26 @@ public class SimulacionesDAO implements OperacionesDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 	@Override
-	public void actualizar(Object obj) {
+	public void borrarTodo() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actualizar(Object obj) throws DatosException {
+		assert obj != null;
+		Simulacion simulActualizada = (Simulacion)obj;
+		int posicion = indexSort(simulActualizada.getIdSimulacion());
+		
+		if (posicion > 0) {
+			datosSimulaciones.set(posicion-1, simulActualizada);
+		} 
+		else {
+			throw new DatosException("Actualizar simulación : No existe la simulación a actualizar");
+		}
 		
 	}
 
@@ -99,7 +115,7 @@ public class SimulacionesDAO implements OperacionesDAO{
 	 * @param idSimulacion - id de la simulacion a insertar
 	 * @return posicion en la que insertar la simulacion
 	 */
-	private int indexSortSimulacion(String idSimulacion) {
+	private int indexSort(String idSimulacion) {
 		int size = datosSimulaciones.size();
 		int puntoMedio;
 		int limiteInferior = 0;
@@ -115,7 +131,8 @@ public class SimulacionesDAO implements OperacionesDAO{
 
 			if (comparacion > 0) {
 				limiteInferior = puntoMedio + 1;
-			} else {
+			} 
+			else {
 				limiteSuperior = puntoMedio - 1;
 			}
 		}

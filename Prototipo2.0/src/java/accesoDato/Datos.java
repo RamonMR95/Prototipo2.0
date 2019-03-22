@@ -50,7 +50,7 @@ public class Datos {
 	}
 
 	public Usuario buscarUsuario(String idUsr) {
-		return (Usuario) usuariosDAO.obtener(idUsr);
+		return usuariosDAO.obtener(idUsr);
 
 	}
 
@@ -60,6 +60,10 @@ public class Datos {
 
 	public void altaUsuario(Usuario usr) throws DatosException {
 		usuariosDAO.alta(usr);
+	}
+	
+	public Usuario bajaUsuario(String idUsr) throws DatosException {
+		return usuariosDAO.baja(idUsr);
 	}
 
 	public void cargarUsuariosPrueba() {

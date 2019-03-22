@@ -39,7 +39,13 @@ public class SesionesDAO implements OperacionesDAO{
 	@Override
 	public Object obtener(String id) {
 		assert id != null;
-		int posicion = indexSortSesiones(id);
+		int indice = indexSort(id) - 1;
+
+		if (indice >= 0) {
+			return datosSesiones.get(indice);
+		}
+
+		return null;
 	}
 
 	@Override
@@ -52,7 +58,7 @@ public class SesionesDAO implements OperacionesDAO{
 	public void alta(Object obj) throws DatosException {
 		SesionUsuario sesion = (SesionUsuario)obj;
 		assert sesion != null;
-		int posicionInsercion = indexSortSesiones(sesion.getIdSesion());
+		int posicionInsercion = indexSort(sesion.getIdSesion());
 
 		if (posicionInsercion < 0) {
 			datosSesiones.add(Math.abs(posicionInsercion) - 1, sesion);
@@ -63,16 +69,31 @@ public class SesionesDAO implements OperacionesDAO{
 	}
 
 	@Override
-	public Object baja(String id) {
+	public Object baja(String id) throws DatosException {
+		assert id != null;
+		int posicion = indexSort(id);
+		
+		if (posicion > 0) {
+			return datosSesiones.remove(posicion-1);
+		}
+		else {
+			throw new DatosException("Baja : El usuario no existe");
+		}
+			
+	}
+	
+
+	@Override
+	public void borrarTodo() {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
 	public void actualizar(Object obj) throws DatosException {
 		assert obj != null;
 		SesionUsuario sesion = (SesionUsuario)obj;
-		int posicion = indexSortSesiones(sesion.getIdSesion());
+		int posicion = indexSort(sesion.getIdSesion());
 		
 		if (posicion > 0) {
 			datosSesiones.set(posicion-1, sesion);
@@ -137,7 +158,7 @@ public class SesionesDAO implements OperacionesDAO{
 	 * @param idSesion - id de la sesion a insertar en el array de sesiones de usuario
 	 * @return Indice a insertar
 	 */
-	private int indexSortSesiones(String idSesion) {
+	private int indexSort(String idSesion) {
 		int size = datosSesiones.size();
 		int puntoMedio;
 		int limiteInferior = 0;
