@@ -131,4 +131,10 @@ public class MundosDAO implements OperacionesDAO{
 		return -(limiteInferior + 1);
 	}
 
+	@Override
+	public Object obtener(Object obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

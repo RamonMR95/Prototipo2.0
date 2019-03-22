@@ -35,8 +35,7 @@ public class JVPrincipal {
 		try {
 			datos = new Datos();
 			interfazUsr = new Presentacion();
-
-			datos.cargarUsuariosPrueba();
+			
 			System.out.println(datos.toStringTodosUsuarios());
 			datos.cargarMundoDemo();
 	

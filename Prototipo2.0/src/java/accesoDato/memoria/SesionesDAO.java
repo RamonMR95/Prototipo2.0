@@ -185,4 +185,10 @@ public class SesionesDAO implements OperacionesDAO{
 		return datosSesiones.size();
 	}
 
+	@Override
+	public Object obtener(Object obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

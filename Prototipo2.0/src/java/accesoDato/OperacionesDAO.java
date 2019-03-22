@@ -18,6 +18,12 @@ public interface OperacionesDAO {
 	Object obtener(String id);
 	
 	/**
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	Object obtener(Object obj);
+	/**
 	 * Devuelve en un objeto List con todos los el objeto 
 	 * del mismo tipo asociados al DAO.
 	 * @return Lista de objectos del DAO.

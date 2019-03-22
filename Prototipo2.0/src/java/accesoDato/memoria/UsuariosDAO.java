@@ -32,6 +32,7 @@ public class UsuariosDAO implements OperacionesDAO {
 	private UsuariosDAO() {
 		datosUsuarios = new ArrayList<Usuario>();
 		mapaEquivalencias = new HashMap<String, String>();
+		cargarUsuariosPredeterminados();
 	}
 
 	public static UsuariosDAO get() {
@@ -72,6 +73,11 @@ public class UsuariosDAO implements OperacionesDAO {
 		return null;
 	}
 
+	@Override
+	public Usuario obtener(Object obj) {
+		return this.obtener(((Usuario)obj).getIdUsr());
+	}
+	
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List obtenerTodos() {
@@ -117,7 +123,9 @@ public class UsuariosDAO implements OperacionesDAO {
 
 	@Override
 	public void borrarTodo() {
-		// TODO Auto-generated method stub
+		datosUsuarios.clear();
+		mapaEquivalencias.clear();
+		cargarUsuariosPredeterminados();
 		
 	}
 
@@ -136,7 +144,8 @@ public class UsuariosDAO implements OperacionesDAO {
 
 			datosUsuarios.set(posicion - 1, usrAct);
 
-		} else {
+		} 
+		else {
 			throw new DatosException("Actualizar" + usrAct.getIdUsr() + "no existe");
 		}
 	}
@@ -230,38 +239,22 @@ public class UsuariosDAO implements OperacionesDAO {
 
 	}
 
-	/**
-	 * Metodo que realiza una carga los Usuarios de prueba que se van a almacenar en
-	 * nuestro programa.
-	 */
-	public void cargarUsuariosPrueba() {
-		for (int i = 0; i < 10; i++) {
-			try {
-				alta(new Usuario(new Nif("0000000" + i + "TRWAGMYFPDXBNJZSQVHLCKE".charAt(i)), "Pepe", "López Pérez",
-						new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
-						new Correo("pepe" + i + "@gmail.com"), new Fecha(1999, 11, 12), new Fecha(2018, 01, 03),
-						new ClaveAcceso("Miau#" + i), RolUsuario.NORMAL));
 
-			} catch (DatosException | ModeloException e) {
-
-			}
-		}
-
-	}
-	
 	public void cargarUsuariosPredeterminados() {
 		try {
 
 			alta(new Usuario(new Nif("00000000T"), "Admin", "Admin Admin", new DireccionPostal(), new Correo(),
-					new Fecha(0001, 01, 01), new Fecha(0001, 01, 01), new ClaveAcceso("Miau#0"),
+					new Fecha(0001, 01, 01), new Fecha(), new ClaveAcceso("Miau#0"),
 					RolUsuario.ADMINSTRADOR));
 
 			alta(new Usuario(new Nif("00000001R"), "Invitado", "Invitado Invitado", new DireccionPostal(), new Correo(),
-					new Fecha(0001, 01, 01), new Fecha(0001, 01, 01), new ClaveAcceso("Miau#0"), RolUsuario.INVITADO));
+					new Fecha(0001, 01, 01), new Fecha(), new ClaveAcceso("Miau#0"), RolUsuario.INVITADO));
 		} 
 		catch (DatosException | ModeloException e) {
 			e.printStackTrace();
 		}
 	}
+
+
 
 }

@@ -10,8 +10,6 @@ package accesoDato;
 
 import accesoDato.memoria.*;
 import modelo.*;
-import modelo.Usuario.RolUsuario;
-import util.Fecha;
 
 public class Datos {
 
@@ -37,18 +35,6 @@ public class Datos {
 		return usuariosDAO;
 	}
 
-	public SesionesDAO getSesionesDAO() {
-		return sesionesDAO;
-	}
-
-	public SimulacionesDAO getSimulacionesDAO() {
-		return simulacionesDAO;
-	}
-
-	public MundosDAO getMundosDAO() {
-		return mundosDAO;
-	}
-
 	public Usuario buscarUsuario(String idUsr) {
 		return usuariosDAO.obtener(idUsr);
 
@@ -65,21 +51,28 @@ public class Datos {
 	public Usuario bajaUsuario(String idUsr) throws DatosException {
 		return usuariosDAO.baja(idUsr);
 	}
-
-	public void cargarUsuariosPrueba() {
-		for (int i = 0; i < 10; i++) {
-			try {
-				altaUsuario(new Usuario(new Nif("0000000" + i + "TRWAGMYFPDXBNJZSQVHLCKE".charAt(i)), "Pepe",
-						"López Pérez", new DireccionPostal("C/ Luna", "2" + i, "3013" + i, "Murcia"),
-						new Correo("pepe" + i + "@gmail.com"), new Fecha(1999, 11, 12), new Fecha(2018, 01, 03),
-						new ClaveAcceso("Miau#" + i), RolUsuario.NORMAL));
-
-			} catch (DatosException | ModeloException e) {
-
-			}
-		}
-
+	
+	public void borrarUsuario() {
+		
 	}
+	
+	public void borrarTodosUsuarios() {
+		usuariosDAO.borrarTodo();
+	}
+	
+	public SesionesDAO getSesionesDAO() {
+		return sesionesDAO;
+	}
+
+	public SimulacionesDAO getSimulacionesDAO() {
+		return simulacionesDAO;
+	}
+
+	public MundosDAO getMundosDAO() {
+		return mundosDAO;
+	}
+
+
 
 	// SESIONES
 
