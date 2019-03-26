@@ -81,9 +81,9 @@ public class SesionUsuario {
 	 * Metodo que genera un id de sesion cuando un usuario inicia sesion
 	 * @return idSesion - id de la sesión iniciada
 	 */
-	public String getIdSesion() {
+	public String getId() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.usr.getIdUsr());
+		sb.append(this.usr.getId());
 		sb.append(this.getFecha().getMarcaTiempoMilisegundos());
 		return sb.toString();
 	}

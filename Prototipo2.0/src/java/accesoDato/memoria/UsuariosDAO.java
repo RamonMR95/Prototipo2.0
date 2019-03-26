@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import accesoDato.IndexSort;
 import accesoDato.DatosException;
 import accesoDato.OperacionesDAO;
 import modelo.ClaveAcceso;
 import modelo.Correo;
 import modelo.DireccionPostal;
+import modelo.Identificable;
 import modelo.ModeloException;
 import modelo.Nif;
 import modelo.Usuario;
@@ -23,14 +25,14 @@ import util.Fecha;
  *  @author: Ramon Moñino
  */
 
-public class UsuariosDAO implements OperacionesDAO {
+public class UsuariosDAO extends IndexSort implements OperacionesDAO {
 
 	private static UsuariosDAO instancia = null;
-	private static ArrayList<Usuario> datosUsuarios;
+	private static List<Identificable> datosUsuarios;
 	private static HashMap<String, String> mapaEquivalencias;
 
 	private UsuariosDAO() {
-		datosUsuarios = new ArrayList<Usuario>();
+		datosUsuarios = new ArrayList<Identificable>();
 		mapaEquivalencias = new HashMap<String, String>();
 		cargarUsuariosPredeterminados();
 	}
@@ -64,10 +66,10 @@ public class UsuariosDAO implements OperacionesDAO {
 		id = mapaEquivalencias.get(id);
 
 		if (id != null) {
-			int indice = indexSort(id) - 1;
+			int indice = indexSort(id, datosUsuarios) - 1;
 
 			if (indice >= 0) {
-				return datosUsuarios.get(indice);
+				return (Usuario) datosUsuarios.get(indice);
 			}
 		}
 		return null;
@@ -75,7 +77,7 @@ public class UsuariosDAO implements OperacionesDAO {
 
 	@Override
 	public Usuario obtener(Object obj) {
-		return this.obtener(((Usuario)obj).getIdUsr());
+		return this.obtener(((Usuario)obj).getId());
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -88,7 +90,7 @@ public class UsuariosDAO implements OperacionesDAO {
 	public void alta(Object obj) throws DatosException {
 		assert obj != null;
 		Usuario usr = (Usuario) obj;
-		int posicionInsercion = indexSort(usr.getIdUsr());
+		int posicionInsercion = indexSort(usr.getId(), datosUsuarios);
 
 		if (posicionInsercion < 0) {
 			datosUsuarios.add(Math.abs(posicionInsercion) - 1, usr);
@@ -107,11 +109,11 @@ public class UsuariosDAO implements OperacionesDAO {
 	@Override
 	public Usuario baja(String id) throws DatosException {
 		assert id != null;
-		int posicion = indexSort(id);
+		int posicion = indexSort(id, datosUsuarios);
 
 		if (posicion > 0) {
-			Usuario usrEliminado = datosUsuarios.remove(posicion - 1);
-			mapaEquivalencias.remove(usrEliminado.getIdUsr());
+			Usuario usrEliminado = (Usuario) datosUsuarios.remove(posicion - 1);
+			mapaEquivalencias.remove(usrEliminado.getId());
 			mapaEquivalencias.remove(usrEliminado.getNif().getNifTexto());
 			mapaEquivalencias.remove(usrEliminado.getCorreo().getCorreoTexto());
 			return usrEliminado;
@@ -133,20 +135,20 @@ public class UsuariosDAO implements OperacionesDAO {
 	public void actualizar(Object obj) throws DatosException {
 		assert obj != null;
 		Usuario usrAct = (Usuario) obj;
-		int posicion = indexSort(usrAct.getIdUsr());
+		int posicion = indexSort(usrAct.getId(), datosUsuarios);
 
 		if (posicion > 0) {
-			Usuario usrModificado = datosUsuarios.get(posicion - 1);
+			Usuario usrModificado = (Usuario) datosUsuarios.get(posicion - 1);
 			mapaEquivalencias.remove(usrModificado.getNif().getNifTexto());
 			mapaEquivalencias.remove(usrModificado.getCorreo().getCorreoTexto());
-			mapaEquivalencias.put(usrAct.getNif().getNifTexto(), usrAct.getIdUsr());
-			mapaEquivalencias.put(usrAct.getCorreo().getCorreoTexto(), usrAct.getIdUsr());
+			mapaEquivalencias.put(usrAct.getNif().getNifTexto(), usrAct.getId());
+			mapaEquivalencias.put(usrAct.getCorreo().getCorreoTexto(), usrAct.getId());
 
 			datosUsuarios.set(posicion - 1, usrAct);
 
 		} 
 		else {
-			throw new DatosException("Actualizar" + usrAct.getIdUsr() + "no existe");
+			throw new DatosException("Actualizar" + usrAct.getId() + "no existe");
 		}
 	}
 
@@ -154,7 +156,7 @@ public class UsuariosDAO implements OperacionesDAO {
 	public String listarDatos() {
 		StringBuilder sb = new StringBuilder();
 
-		for (Usuario usuario : datosUsuarios) {
+		for (Identificable usuario : datosUsuarios) {
 			sb.append(usuario);
 			sb.append("\n");
 		}
@@ -166,8 +168,8 @@ public class UsuariosDAO implements OperacionesDAO {
 	public String listarId() {
 		StringBuilder sb = new StringBuilder();
 
-		for (Usuario usuario : datosUsuarios) {
-			sb.append(usuario.getIdUsr());
+		for (Identificable usuario : datosUsuarios) {
+			sb.append(usuario.getId());
 		}
 		return sb.toString();
 	}
@@ -178,40 +180,11 @@ public class UsuariosDAO implements OperacionesDAO {
 	 * @param usr - Usuario a registrar en el mapa de equivalencias
 	 */
 	private void registrarEquivalenciasId(Usuario usr) {
-		mapaEquivalencias.put(usr.getNif().getNifTexto(), usr.getIdUsr());
-		mapaEquivalencias.put(usr.getCorreo().getCorreoTexto(), usr.getIdUsr());
-		mapaEquivalencias.put(usr.getIdUsr(), usr.getIdUsr());
+		mapaEquivalencias.put(usr.getNif().getNifTexto(), usr.getId());
+		mapaEquivalencias.put(usr.getCorreo().getCorreoTexto(), usr.getId());
+		mapaEquivalencias.put(usr.getId(), usr.getId());
 	}
-
-	/**
-	 * Busca usuario dado su nif.
-	 * @param idUsr - el nif del Usuario a buscar.
-	 * @return - el Usuario encontrado o null si no existe.
-	 */
-	public int indexSort(String idUsr) {
-		int size = datosUsuarios.size();
-		int puntoMedio;
-		int limiteInferior = 0;
-		int limiteSuperior = size - 1;
-
-		while (limiteInferior <= limiteSuperior) {
-			puntoMedio = (limiteSuperior + limiteInferior) / 2;
-			int comparacion = idUsr.compareTo(datosUsuarios.get(puntoMedio).getIdUsr());
-
-			if (comparacion == 0) {
-				return puntoMedio + 1;
-			}
-
-			if (comparacion > 0) {
-				limiteInferior = puntoMedio + 1;
-			} else {
-				limiteSuperior = puntoMedio - 1;
-			}
-
-		}
-		return -(limiteInferior + 1);
-	}
-
+	
 	/**
 	 * Metodo que produce un idUsr diferente en caso de coincidencia
 	 * @param usr - Usuario en sesion
@@ -224,7 +197,7 @@ public class UsuariosDAO implements OperacionesDAO {
 		do {
 			/* Coincidencia de ig generar variante */
 			usr = new Usuario(usr);
-			posicionInsercion = indexSort(usr.getIdUsr());
+			posicionInsercion = indexSort(usr.getId(), datosUsuarios);
 
 			if (posicionInsercion < 0) {
 				datosUsuarios.add(-posicionInsercion, usr);

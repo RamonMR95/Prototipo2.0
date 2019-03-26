@@ -16,9 +16,9 @@ import util.Fecha;
  *  @author: Ramon Moñino
  */
 
-public class Usuario extends Persona{
+public class Usuario extends Persona implements Identificable {
 
-	private String idUsr;
+	private String id;
 	private Fecha fechaAlta;
 	private ClaveAcceso claveAcceso;
 	private RolUsuario rol;
@@ -65,7 +65,7 @@ public class Usuario extends Persona{
 	 */
 	public Usuario(Usuario usr) {
 		super(usr);
-		this.idUsr = new String(usr.idUsr);
+		this.id = new String(usr.id);
 		this.fechaAlta = new Fecha(usr.fechaAlta.getYear(), usr.fechaAlta.getMonth(), usr.fechaAlta.getDay());
 		this.claveAcceso = new ClaveAcceso(usr.claveAcceso);
 		this.rol = usr.rol;
@@ -77,8 +77,8 @@ public class Usuario extends Persona{
 	 * Devuelve el id del usuario
 	 * @return isUsr - id del usuario
 	 */
-	public String getIdUsr() {
-		return idUsr;
+	public String getId() {
+		return id;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class Usuario extends Persona{
 		id.append(divApellidos[0].substring(0, 1).toUpperCase());
 		id.append(divApellidos[1].substring(0, 1).toUpperCase());
 		id.append(this.nif.getNifTexto().substring(7, 9));
-		this.idUsr = id.toString();
+		this.id = id.toString();
 		return id.toString();
 	}
 
@@ -104,7 +104,7 @@ public class Usuario extends Persona{
 	private void generarVarianteIdUsr() {
 		String alfabetoNif = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		String alfabetoDesplazado = "BCDEFGHIJKLMNOPQRSTUVWXYZA";
-		this.idUsr = this.idUsr.substring(0, 4) + alfabetoDesplazado.charAt(alfabetoNif.indexOf(idUsr.charAt(4)));
+		this.id = this.id.substring(0, 4) + alfabetoDesplazado.charAt(alfabetoNif.indexOf(id.charAt(4)));
 	}
 
 	
@@ -192,7 +192,7 @@ public class Usuario extends Persona{
 				"%-16s %s\n" + 
 				"%-16s %s\n" + 
 				"%-16s %s\n" ,
-				"idUsr:", this.idUsr, 	
+				"idUsr:", this.id, 	
 				"fechaAlta:", this.fechaAlta.getYear() + "." + 
 							this.fechaAlta.getMonth() + "." + 
 							this.fechaAlta.getDay(),

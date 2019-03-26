@@ -84,7 +84,7 @@ public class Simulacion {
 
 	public String getIdSimulacion() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getUsr().getIdUsr());
+		sb.append(this.getUsr().getId());
 		sb.append(this.fecha.getMarcaTiempoMilisegundos());
 		return sb.toString();
 	}

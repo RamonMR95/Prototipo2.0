@@ -144,7 +144,7 @@ public class UsuarioTest {
 	@Test
 	public void testUsuarioCopiaEspecialVariarId() {
 		Usuario usuario = new Usuario(usuario1);
-		assertNotEquals(usuario.getIdUsr(), usuario1.getIdUsr());
+		assertNotEquals(usuario.getId(), usuario1.getId());
 	}
 	
 	@Test

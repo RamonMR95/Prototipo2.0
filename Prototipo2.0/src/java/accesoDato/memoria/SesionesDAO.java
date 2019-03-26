@@ -3,8 +3,10 @@ package accesoDato.memoria;
 import java.util.ArrayList;
 import java.util.List;
 
+import accesoDato.IndexSort;
 import accesoDato.DatosException;
 import accesoDato.OperacionesDAO;
+import modelo.Identificable;
 import modelo.SesionUsuario;
 
 /** Proyecto: Juego de la vida.
@@ -15,10 +17,10 @@ import modelo.SesionUsuario;
  *  @author: Ramon Moñino
  */
 
-public class SesionesDAO implements OperacionesDAO{
+public class SesionesDAO extends IndexSort implements OperacionesDAO{
 
 	private static SesionesDAO instancia = null;
-	private ArrayList<SesionUsuario> datosSesiones;
+	private List<Identificable> datosSesiones;
 
 	public SesionesDAO() {
 		datosSesiones = new ArrayList<>();
@@ -32,14 +34,26 @@ public class SesionesDAO implements OperacionesDAO{
 		return instancia;
 	}
 
-	public ArrayList<SesionUsuario> getSesionUsuario() {
+	public List<Identificable> getSesionUsuario() {
 		return datosSesiones;
 	}
 
 	@Override
 	public Object obtener(String id) {
 		assert id != null;
-		int indice = indexSort(id) - 1;
+		int indice = indexSort(id, datosSesiones) - 1;
+
+		if (indice >= 0) {
+			return datosSesiones.get(indice);
+		}
+
+		return null;
+	}
+	
+	@Override
+	public Object obtener(Object obj) {
+		assert obj != null;
+		int indice = indexSort(((SesionUsuario) obj).getId(), datosSesiones) - 1;
 
 		if (indice >= 0) {
 			return datosSesiones.get(indice);
@@ -54,14 +68,19 @@ public class SesionesDAO implements OperacionesDAO{
 		return null;
 	}
 
+	/**
+	 * Metodo que registra la sesion en el almacen de sesiones del programa.
+	 * @param sesion - Sesión a añadir al array de sesiones
+	 * @throws DatosException 
+	 */
 	@Override
 	public void alta(Object obj) throws DatosException {
 		SesionUsuario sesion = (SesionUsuario)obj;
 		assert sesion != null;
-		int posicionInsercion = indexSort(sesion.getIdSesion());
+		int posicionInsercion = indexSort(sesion.getId(), datosSesiones);
 
 		if (posicionInsercion < 0) {
-			datosSesiones.add(Math.abs(posicionInsercion) - 1, sesion);
+			datosSesiones.add(Math.abs(posicionInsercion) - 1, (Identificable) sesion);
 		} else {
 			throw new DatosException("Alta Sesion: ya existe");
 		}
@@ -71,7 +90,7 @@ public class SesionesDAO implements OperacionesDAO{
 	@Override
 	public Object baja(String id) throws DatosException {
 		assert id != null;
-		int posicion = indexSort(id);
+		int posicion = indexSort(id, datosSesiones);
 		
 		if (posicion > 0) {
 			return datosSesiones.remove(posicion-1);
@@ -85,7 +104,7 @@ public class SesionesDAO implements OperacionesDAO{
 
 	@Override
 	public void borrarTodo() {
-		// TODO Auto-generated method stub
+		datosSesiones.clear();;
 		
 	}
 
@@ -93,21 +112,26 @@ public class SesionesDAO implements OperacionesDAO{
 	public void actualizar(Object obj) throws DatosException {
 		assert obj != null;
 		SesionUsuario sesion = (SesionUsuario)obj;
-		int posicion = indexSort(sesion.getIdSesion());
+		int posicion = indexSort(sesion.getId(), datosSesiones);
 		
 		if (posicion > 0) {
-			datosSesiones.set(posicion-1, sesion);
+			datosSesiones.set(posicion-1, (Identificable) sesion);
 			
-		} else {
-			throw new DatosException("Sesiones : " + sesion.getIdSesion() + " no existe");
+		}
+		else {
+			throw new DatosException("Sesiones : " + sesion.getId() + " no existe");
 		}
 		
 	}
 
 	@Override
 	public String listarDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+
+		for (Identificable sesiones : datosSesiones) {
+			sb.append("\n" + sesiones);
+		}
+		return sb.toString();
 	}
 
 	@Override
@@ -116,79 +140,8 @@ public class SesionesDAO implements OperacionesDAO{
 		return null;
 	}
 	
-	/**
-	 * Metodo get que obtiene el numero de sesiones registradas.
-	 * @return Numero de sesionesRegistradas
-	 */
-	public int getSesionesRegistradas() {
-		return datosSesiones.size();
-	}
-
-	/**
-	 * Metodo que registra la sesion en el almacen de sesiones del programa.
-	 * @param sesion - Sesión a añadir al array de sesiones
-	 * @throws DatosException 
-	 */
-	public void altaSesion(SesionUsuario sesion) throws DatosException {
-
-	}
-
-//	/**
-//	 * Metodo que busca una sesion del array de sesiones
-//	 * @param sesion - Sesion a buscar
-//	 * @return Sesion si la encuentra, null si no
-//	 */
-//	public SesionUsuario buscarSesion(String sesion) {
-//		assert sesion != null;
-//		sesion = mapaEquivalencias.get(sesion);
-//
-//		if (sesion != null) {
-//			int indice = indexSortUsuario(sesion) - 1;
-//
-//			if (indice >= 0) {
-//				return datosSesiones.get(indice);
-//			}
-//		}
-//		return null;
-//
-//	}
-
-	/**
-	 * Metodo de inserción binaria de sesiones
-	 * @param idSesion - id de la sesion a insertar en el array de sesiones de usuario
-	 * @return Indice a insertar
-	 */
-	private int indexSort(String idSesion) {
-		int size = datosSesiones.size();
-		int puntoMedio;
-		int limiteInferior = 0;
-		int limiteSuperior = size - 1;
-
-		while (limiteInferior <= limiteSuperior) {
-			puntoMedio = (limiteSuperior + limiteInferior) / 2;
-			int comparacion = idSesion.compareTo(datosSesiones.get(puntoMedio).getIdSesion());
-
-			if (comparacion == 0) {
-				return puntoMedio + 1;
-			}
-
-			if (comparacion > 0) {
-				limiteInferior = puntoMedio + 1;
-			} else {
-				limiteSuperior = puntoMedio - 1;
-			}
-		}
-		return -(limiteInferior + 1);
-	}
-
 	public int size() {
 		return datosSesiones.size();
-	}
-
-	@Override
-	public Object obtener(Object obj) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
