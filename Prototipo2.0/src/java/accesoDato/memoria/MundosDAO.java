@@ -20,11 +20,12 @@ public class MundosDAO implements OperacionesDAO{
 	private static MundosDAO instancia = null;
 	private ArrayList<Mundo> datosMundos;
 
-	private MundosDAO() {
-		datosMundos = new ArrayList<>();
+	private MundosDAO() throws DatosException {
+		datosMundos = new ArrayList<Mundo>();
+		cargarPredeterminados();
 	}
 
-	public static MundosDAO get() {
+	public static MundosDAO get() throws DatosException {
 		if (instancia == null) {
 			instancia = new MundosDAO();
 		}
@@ -36,7 +37,7 @@ public class MundosDAO implements OperacionesDAO{
 	}
 
 	@Override
-	public Object obtener(String id) {
+	public Mundo obtener(String id) {
 		for (Mundo mundo : datosMundos) {
 			if (mundo != null && mundo.getId().equalsIgnoreCase(id)) {
 				return mundo;
@@ -59,7 +60,8 @@ public class MundosDAO implements OperacionesDAO{
 
 		if (posicionInsercion < 0) {
 			datosMundos.add(Math.abs(posicionInsercion) - 1, mundo);
-		} else {
+		} 
+		else {
 			throw new DatosException("Error Mundo: nombre repetido");
 
 		}
@@ -74,8 +76,9 @@ public class MundosDAO implements OperacionesDAO{
 
 
 	@Override
-	public void borrarTodo() {
-		// TODO Auto-generated method stub
+	public void borrarTodo() throws DatosException {
+		datosMundos.clear();
+		cargarPredeterminados();
 		
 	}
 	
@@ -123,7 +126,8 @@ public class MundosDAO implements OperacionesDAO{
 
 			if (comparacion > 0) {
 				limiteInferior = puntoMedio + 1;
-			} else {
+			} 
+			else {
 				limiteSuperior = puntoMedio - 1;
 			}
 
@@ -135,6 +139,33 @@ public class MundosDAO implements OperacionesDAO{
 	public Object obtener(Object obj) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void cargarPredeterminados() throws DatosException {
+		
+		byte [][] espacioDemo = new byte[][] { 
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+										{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+
+		Mundo mundo = new Mundo();
+		mundo.setEspacio(espacioDemo);
+		alta(mundo);
 	}
 
 }

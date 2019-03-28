@@ -37,8 +37,6 @@ public class JVPrincipal {
 			interfazUsr = new Presentacion();
 			
 			System.out.println(datos.toStringTodosUsuarios());
-			datos.cargarMundoDemo();
-	
 
 			if (interfazUsr.inicioSesionCorrecto()) {
 

@@ -130,6 +130,11 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO {
 		cargarUsuariosPredeterminados();
 		
 	}
+	
+	@Override
+	public void cerrar() {
+		
+	}
 
 	@Override
 	public void actualizar(Object obj) throws DatosException {

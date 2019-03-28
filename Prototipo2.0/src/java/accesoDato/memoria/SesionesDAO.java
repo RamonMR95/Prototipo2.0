@@ -17,10 +17,10 @@ import modelo.SesionUsuario;
  *  @author: Ramon Moñino
  */
 
-public class SesionesDAO extends IndexSort implements OperacionesDAO{
+public class SesionesDAO extends IndexSort implements OperacionesDAO {
 
 	private static SesionesDAO instancia = null;
-	private List<Identificable> datosSesiones;
+	private ArrayList<Identificable> datosSesiones;
 
 	public SesionesDAO() {
 		datosSesiones = new ArrayList<>();
@@ -80,7 +80,7 @@ public class SesionesDAO extends IndexSort implements OperacionesDAO{
 		int posicionInsercion = indexSort(sesion.getId(), datosSesiones);
 
 		if (posicionInsercion < 0) {
-			datosSesiones.add(Math.abs(posicionInsercion) - 1, (Identificable) sesion);
+			datosSesiones.add(Math.abs(posicionInsercion) - 1, sesion);
 		} else {
 			throw new DatosException("Alta Sesion: ya existe");
 		}

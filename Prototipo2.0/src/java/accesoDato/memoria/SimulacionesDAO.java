@@ -5,7 +5,10 @@ import java.util.List;
 
 import accesoDato.DatosException;
 import accesoDato.OperacionesDAO;
+import modelo.Mundo;
 import modelo.Simulacion;
+import modelo.Usuario;
+import util.Fecha;
 
 /** Proyecto: Juego de la vida.
  *  Clase especializada en el acceso a datos de simulaciones utilizando un arraylist
@@ -47,7 +50,6 @@ public class SimulacionesDAO implements OperacionesDAO{
 
 	@Override
 	public List<Object> obtenerTodos() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -143,6 +145,16 @@ public class SimulacionesDAO implements OperacionesDAO{
 	public Object obtener(Object obj) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void cargarPredeterminados() throws DatosException {
+		try {
+			Usuario usrDemo = UsuariosDAO.get().obtener("III1R");
+			Mundo mundoDemo = MundosDAO.get().obtener("Demo1");
+			alta(new Simulacion(usrDemo, new Fecha(0001,01,01,01,01,01), mundoDemo));
+		} 
+		catch (DatosException e) {
+		}
 	}
 
 }

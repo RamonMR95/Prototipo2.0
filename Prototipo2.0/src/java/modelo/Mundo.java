@@ -323,10 +323,9 @@ public class Mundo {
 			for (int j = 0; j < espacio.length; j++) {
 				if (espacio[i][j] == 1) {
 					sb.append("|o");
-
-				} else {
+				} 
+				else {
 					sb.append("| ");
-
 				}
 			}
 			sb.append("|\n");

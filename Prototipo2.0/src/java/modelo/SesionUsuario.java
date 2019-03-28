@@ -9,7 +9,7 @@ package modelo;
 
 import util.Fecha;
 
-public class SesionUsuario {
+public class SesionUsuario implements Identificable{
 	/**
 	 * Atributos de la clase Sesion de usuario
 	 */

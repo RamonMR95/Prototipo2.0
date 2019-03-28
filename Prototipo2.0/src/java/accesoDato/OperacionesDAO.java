@@ -50,8 +50,9 @@ public interface OperacionesDAO {
 	
 	/**
 	 * Elimina todos los datos y restaura predeterminados
+	 * @throws DatosException 
 	 */
-	void borrarTodo();
+	void borrarTodo() throws DatosException;
 	
 	/**
 	 * Metodo que recibe un argumento que representa el objeto con 
@@ -73,5 +74,11 @@ public interface OperacionesDAO {
 	 * @return Texto - texto con los datos.
 	 */
 	String listarId();
+
+	/**
+	 * 
+	 */
+	default void cerrar() {
+	}
 	
 }

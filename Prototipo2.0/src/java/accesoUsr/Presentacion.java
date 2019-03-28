@@ -10,6 +10,7 @@ package accesoUsr;
 import java.util.Scanner;
 
 import accesoDato.Datos;
+import accesoDato.DatosException;
 import modelo.ClaveAcceso;
 import modelo.ModeloException;
 import modelo.Simulacion;
@@ -24,7 +25,7 @@ public class Presentacion {
 	private Datos datos;
 	private Simulacion simulacion;
 
-	public Presentacion() throws ModeloException {
+	public Presentacion() throws ModeloException, DatosException {
 		usrEnSesion = null;
 		datos = new Datos();
 		simulacion = new Simulacion();
