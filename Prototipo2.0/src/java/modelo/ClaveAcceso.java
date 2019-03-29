@@ -7,7 +7,9 @@
  */
 package modelo;
 
-public class ClaveAcceso {
+import java.io.Serializable;
+
+public class ClaveAcceso implements Serializable{
 	/**
 	 * Cadena de caracteres que va a formar el texto de la clave de acceso.
 	 */

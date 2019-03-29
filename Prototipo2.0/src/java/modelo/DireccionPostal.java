@@ -7,7 +7,9 @@
  */
 package modelo;
 
-public class DireccionPostal {
+import java.io.Serializable;
+
+public class DireccionPostal implements Serializable{
 	/**
 	 * Atributos que van a formar nuestra direccion.
 	 */

@@ -7,7 +7,9 @@
  */
 package modelo;
 
-public class Nif {
+import java.io.Serializable;
+
+public class Nif implements Serializable{
 	/**
 	 * Atributo de la clase que va a contener el DNI de los usuarios
 	 */

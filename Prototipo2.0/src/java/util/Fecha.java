@@ -7,11 +7,12 @@
  */
 package util;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class Fecha {
+public class Fecha implements Serializable {
 	/**
 	 * Atributo de tipo calendar que vamos a utilizar para definir objetos de tipo Fecha
 	 */

@@ -8,7 +8,10 @@
 
 package accesoDato;
 
-import accesoDato.memoria.*;
+import accesoDato.fichero.*;
+import accesoDato.memoria.MundosDAO;
+import accesoDato.memoria.SesionesDAO;
+import accesoDato.memoria.SimulacionesDAO;
 import modelo.*;
 
 public class Datos {
@@ -38,6 +41,13 @@ public class Datos {
 	public Usuario buscarUsuario(String idUsr) {
 		return usuariosDAO.obtener(idUsr);
 
+	}
+	
+	public void cerrar() {
+		usuariosDAO.cerrar();
+		sesionesDAO.cerrar();
+		mundosDAO.cerrar();
+		simulacionesDAO.cerrar();
 	}
 
 	public String toStringTodosUsuarios() {
@@ -110,7 +120,7 @@ public class Datos {
 	 * @return simulación si la encuentra o null si no la encuentra.
 	 */
 	public Simulacion buscarSimulacion(String idSimulacion) {
-		return (Simulacion) simulacionesDAO.obtener(idSimulacion);
+		return simulacionesDAO.obtener(idSimulacion);
 	}
 
 	/**

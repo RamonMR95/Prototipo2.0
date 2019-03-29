@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  *  @author: Ramon Moñino
  */
 
-public class Mundo {
+public class Mundo implements Serializable{
 	/**
 	 * Atributos de la clase Mundo 
 	 */

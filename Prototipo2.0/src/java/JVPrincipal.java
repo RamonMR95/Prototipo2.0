@@ -57,6 +57,7 @@ public class JVPrincipal {
 				System.out.println("\nDemasiados intentos fallidos...");
 
 			}
+			datos.cerrar();
 			System.out.println("Fin del programa.");
 			
 		} catch (ModeloException | DatosException e) {

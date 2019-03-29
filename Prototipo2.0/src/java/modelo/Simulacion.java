@@ -8,9 +8,11 @@ package modelo;
  * @author: Ramon Moñino
  */
 
+import java.io.Serializable;
+
 import util.Fecha;
 
-public class Simulacion {
+public class Simulacion implements Serializable{
 	private static final int CICLOS_SIMULACION = 20;
 	
 	private Usuario usr;

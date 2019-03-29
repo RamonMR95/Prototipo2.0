@@ -7,7 +7,9 @@
  */
 package modelo;
 
-public class Correo {
+import java.io.Serializable;
+
+public class Correo implements Serializable{
 	/**
 	 * Cadena de caracteres que va a formar nuestro correo
 	 */

@@ -1,5 +1,7 @@
 package modelo;
 
+import java.io.Serializable;
+
 import config.ConfiguracionSingletonCanonico;
 import util.Fecha;
 
@@ -16,7 +18,7 @@ import util.Fecha;
  *  @author: Ramon Moñino
  */
 
-public class Usuario extends Persona implements Identificable {
+public class Usuario extends Persona implements Identificable, Serializable {
 
 	private String id;
 	private Fecha fechaAlta;

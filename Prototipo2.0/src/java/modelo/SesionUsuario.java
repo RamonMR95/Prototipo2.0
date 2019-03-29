@@ -7,9 +7,11 @@
  */
 package modelo;
 
+import java.io.Serializable;
+
 import util.Fecha;
 
-public class SesionUsuario implements Identificable{
+public class SesionUsuario implements Identificable, Serializable {
 	/**
 	 * Atributos de la clase Sesion de usuario
 	 */

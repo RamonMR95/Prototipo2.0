@@ -39,7 +39,7 @@ public class SimulacionesDAO implements OperacionesDAO{
 		return datosSimulaciones;
 	}
 	@Override
-	public Object obtener(String id) {
+	public Simulacion obtener(String id) {
 		for (Simulacion simulacion : datosSimulaciones) {
 			if (simulacion != null && simulacion.getIdSimulacion().equalsIgnoreCase(id)) {
 				return simulacion;

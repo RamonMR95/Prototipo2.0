@@ -1,5 +1,7 @@
 package modelo;
 
+import java.io.Serializable;
+
 import util.Fecha;
 
 /** Proyecto: Juego de la vida.
@@ -15,7 +17,7 @@ import util.Fecha;
  *  @author: Ramon Moñino
  */
 
-public abstract class Persona {
+public abstract class Persona implements Serializable{
 
 	protected Nif nif;
 	protected String nombre;

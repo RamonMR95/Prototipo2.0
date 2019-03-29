@@ -2,8 +2,10 @@ package accesoDato.fichero;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,17 +44,10 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 	private UsuariosDAO() {
 		datosUsuarios = new ArrayList<Identificable>();
 		mapaEquivalencias = new HashMap<String, String>();
-//		ficheroUsuarios = new File("usuarios.dat");
-//		ficheroEquivalencias = new File("equivalId.dat");
 		ficheroUsuarios = new File(Configuracion.get().getProperty("usuarios.nombreFichero"));
 		ficheroEquivalencias = new File(Configuracion.get().getProperty("equivalenciasId.nombreFichero"));
-
-		if (ficheroUsuarios.exists()) { // La existencia de un fichero se puede hacer solo con File
-			recuperarDatos();
-		} 
-		else {
-			cargarUsuariosPredeterminados();
-		}
+		recuperarDatos();
+		
 	}
 
 	public static UsuariosDAO get() {
@@ -65,24 +60,37 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 	// Persistencia
 	@SuppressWarnings("unchecked")
 	public void recuperarDatos() {
-		try {
-			FileInputStream fis = new FileInputStream(ficheroUsuarios);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			datosUsuarios = (ArrayList<Identificable>) ois.readObject();
+		if (this.ficheroUsuarios.exists() && this.ficheroEquivalencias.exists()) {
+			try {
+				FileInputStream fis = new FileInputStream(ficheroUsuarios);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				datosUsuarios = (ArrayList<Identificable>) ois.readObject();
 
-			FileInputStream fis2 = new FileInputStream(ficheroEquivalencias);
-			ObjectInputStream ois2 = new ObjectInputStream(fis2);
-			mapaEquivalencias = (HashMap<String, String>) ois2.readObject();
-			
+				FileInputStream fis2 = new FileInputStream(ficheroEquivalencias);
+				ObjectInputStream ois2 = new ObjectInputStream(fis2);
+				mapaEquivalencias = (HashMap<String, String>) ois2.readObject();
+				return;
+
+			} 
+			catch (IOException | ClassNotFoundException e) {}
 		} 
-		catch (IOException | ClassNotFoundException e) {
-
-		}
+		borrarTodo();
 	}
 
 	@Override
 	public void guardarDatos() {
-		
+		try {
+			FileOutputStream fos = new FileOutputStream(ficheroUsuarios);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(datosUsuarios);
+
+			FileOutputStream fos2 = new FileOutputStream(ficheroEquivalencias);
+			ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
+			oos2.writeObject(mapaEquivalencias);
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getEquivalenciaId(String clave) {
@@ -128,15 +136,15 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		if (posicionInsercion < 0) {
 			datosUsuarios.add(Math.abs(posicionInsercion) - 1, usr);
 			registrarEquivalenciasId(usr);
-		} else {
+		} 
+		else {
 			if (!datosUsuarios.get(posicionInsercion - 1).equals(usr)) {
 				producirVarianteIdUsr(usr);
-			} else {
+			} 
+			else {
 				throw new DatosException("Error usr repetido");
 			}
-
 		}
-
 	}
 
 	@Override
@@ -167,6 +175,7 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 	@Override
 	public void cerrar() {
 		guardarDatos();
+		
 	}
 
 	@Override
@@ -187,6 +196,7 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		else {
 			throw new DatosException("Actualizar" + usrAct.getId() + "no existe");
 		}
+		
 	}
 
 	@Override
@@ -243,7 +253,8 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 			}
 			intentos--;
 
-		} while (intentos >= 0);
+		} 
+		while (intentos >= 0);
 
 		throw new DatosException("Error imposible generar variante");
 
@@ -254,15 +265,13 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		try {
 
 			alta(new Usuario(new Nif("00000000T"), "Admin", "Admin Admin", new DireccionPostal(), new Correo(),
-					new Fecha(0001, 01, 01), new Fecha(), new ClaveAcceso("Miau#0"),
+					new Fecha(0001, 01, 01), new Fecha(), new ClaveAcceso("admin"),
 					RolUsuario.ADMINSTRADOR));
 
 			alta(new Usuario(new Nif("00000001R"), "Invitado", "Invitado Invitado", new DireccionPostal(), new Correo(),
 					new Fecha(0001, 01, 01), new Fecha(), new ClaveAcceso("Miau#0"), RolUsuario.INVITADO));
 		} 
-		catch (DatosException | ModeloException e) {
-
-		}
+		catch (DatosException | ModeloException e) {}
 	}
 
 } // Class UsuariosDAO
