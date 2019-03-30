@@ -10,6 +10,8 @@ package modelo;
 import java.io.Serializable;
 
 public class DireccionPostal implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Atributos que van a formar nuestra direccion.
 	 */

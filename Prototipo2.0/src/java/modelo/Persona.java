@@ -19,6 +19,7 @@ import util.Fecha;
 
 public abstract class Persona implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	protected Nif nif;
 	protected String nombre;
 	protected String apellidos;

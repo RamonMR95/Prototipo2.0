@@ -10,6 +10,8 @@ package modelo;
 import java.io.Serializable;
 
 public class ClaveAcceso implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Cadena de caracteres que va a formar el texto de la clave de acceso.
 	 */

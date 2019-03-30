@@ -20,6 +20,8 @@ import util.Fecha;
 
 public class Usuario extends Persona implements Identificable, Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String id;
 	private Fecha fechaAlta;
 	private ClaveAcceso claveAcceso;

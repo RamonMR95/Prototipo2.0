@@ -41,7 +41,7 @@ public class SimulacionesDAO implements OperacionesDAO{
 	@Override
 	public Simulacion obtener(String id) {
 		for (Simulacion simulacion : datosSimulaciones) {
-			if (simulacion != null && simulacion.getIdSimulacion().equalsIgnoreCase(id)) {
+			if (simulacion != null && simulacion.getId().equalsIgnoreCase(id)) {
 				return simulacion;
 			}
 		}
@@ -57,7 +57,7 @@ public class SimulacionesDAO implements OperacionesDAO{
 	public void alta(Object obj) throws DatosException {
 		assert obj != null;
 		Simulacion simulacion = (Simulacion)obj;
-		int posicionInsercion = indexSort(simulacion.getIdSimulacion());
+		int posicionInsercion = indexSort(simulacion.getId());
 
 		if (posicionInsercion < 0) {
 			datosSimulaciones.add(Math.abs(posicionInsercion) - 1, simulacion);
@@ -85,7 +85,7 @@ public class SimulacionesDAO implements OperacionesDAO{
 	public void actualizar(Object obj) throws DatosException {
 		assert obj != null;
 		Simulacion simulActualizada = (Simulacion)obj;
-		int posicion = indexSort(simulActualizada.getIdSimulacion());
+		int posicion = indexSort(simulActualizada.getId());
 		
 		if (posicion > 0) {
 			datosSimulaciones.set(posicion-1, simulActualizada);
@@ -125,7 +125,7 @@ public class SimulacionesDAO implements OperacionesDAO{
 
 		while (limiteInferior <= limiteSuperior) {
 			puntoMedio = (limiteSuperior + limiteInferior) / 2;
-			int comparacion = idSimulacion.compareTo(datosSimulaciones.get(puntoMedio).getIdSimulacion());
+			int comparacion = idSimulacion.compareTo(datosSimulaciones.get(puntoMedio).getId());
 
 			if (comparacion == 0) {
 				return puntoMedio + 1;

@@ -13,7 +13,9 @@ import java.util.List;
  *  @author: Ramon Moñino
  */
 
-public class Mundo implements Serializable{
+public class Mundo implements Serializable, Identificable {
+
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Atributos de la clase Mundo 
 	 */

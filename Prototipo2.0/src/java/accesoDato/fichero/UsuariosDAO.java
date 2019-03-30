@@ -57,6 +57,10 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		return instancia;
 	}
 	
+	public String getEquivalenciaId(String clave) {
+		return mapaEquivalencias.get(clave);
+	}
+	
 	// Persistencia
 	@SuppressWarnings("unchecked")
 	public void recuperarDatos() {
@@ -83,18 +87,14 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 			FileOutputStream fos = new FileOutputStream(ficheroUsuarios);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(datosUsuarios);
+			oos.close();
 
 			FileOutputStream fos2 = new FileOutputStream(ficheroEquivalencias);
 			ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
 			oos2.writeObject(mapaEquivalencias);
+			oos2.close();
 		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public String getEquivalenciaId(String clave) {
-		return mapaEquivalencias.get(clave);
+		catch (IOException e) { }
 	}
 
 	public int getSize() {
@@ -118,6 +118,7 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 
 	@Override
 	public Usuario obtener(Object obj) {
+		assert obj != null;
 		return this.obtener(((Usuario)obj).getId());
 	}
 	
@@ -204,8 +205,8 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		StringBuilder sb = new StringBuilder();
 
 		for (Identificable usuario : datosUsuarios) {
-			sb.append(usuario);
-			sb.append("\n");
+			sb.append(usuario + "\n");
+			
 		}
 		return sb.toString();
 

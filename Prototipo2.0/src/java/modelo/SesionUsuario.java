@@ -12,6 +12,8 @@ import java.io.Serializable;
 import util.Fecha;
 
 public class SesionUsuario implements Identificable, Serializable {
+
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Atributos de la clase Sesion de usuario
 	 */

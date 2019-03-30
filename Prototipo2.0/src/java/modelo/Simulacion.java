@@ -12,7 +12,10 @@ import java.io.Serializable;
 
 import util.Fecha;
 
-public class Simulacion implements Serializable{
+public class Simulacion implements Serializable, Identificable {
+
+	private static final long serialVersionUID = 1L;
+
 	private static final int CICLOS_SIMULACION = 20;
 	
 	private Usuario usr;
@@ -84,7 +87,7 @@ public class Simulacion implements Serializable{
 		return CICLOS_SIMULACION;
 	}
 
-	public String getIdSimulacion() {
+	public String getId() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.getUsr().getId());
 		sb.append(this.fecha.getMarcaTiempoMilisegundos());
@@ -95,5 +98,6 @@ public class Simulacion implements Serializable{
 	public String toString() {
 		return String.format("Simulacion [usr=%s, fecha=%s, mundo=%s]", usr, fecha, mundo);
 	}
+
 	
 } // class
