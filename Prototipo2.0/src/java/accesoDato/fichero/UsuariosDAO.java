@@ -34,13 +34,18 @@ import util.Fecha;
  */
 
 public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistente {
-
+	
+	/* Atributos de la clase UsuariosDAO */
 	private static UsuariosDAO instancia = null;
 	private ArrayList<Identificable> datosUsuarios;
 	private HashMap<String, String> mapaEquivalencias;
 	private File ficheroUsuarios;
 	private File ficheroEquivalencias;
 
+	/**
+	 * Constructor por defecto de la clase que inicializa los valores de los atributos y 
+	 * genera el fichero de guardado y recuperación de datos de usuarios
+	 */
 	private UsuariosDAO() {
 		datosUsuarios = new ArrayList<Identificable>();
 		mapaEquivalencias = new HashMap<String, String>();
@@ -50,6 +55,10 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		
 	}
 
+	/**
+	 * Metodo propio del patron singleton que se usa para controlar que solo se crea una instancia de la clase UsuariosDAO solo una vez.
+	 * @return instancia - Variable usada por el patron singleton.
+	 */
 	public static UsuariosDAO get() {
 		if (instancia == null) {
 			instancia = new UsuariosDAO();
@@ -57,50 +66,21 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		return instancia;
 	}
 	
+	/**
+	 * Metodo que obtiene la equivalencia en el mapa de equivalencias dada un clave
+	 * @param clave - Clave del usuario en el mapa de equivalencias
+	 * @return Valor - Valor equivalente a la clave en el mapa
+	 */
 	public String getEquivalenciaId(String clave) {
 		return mapaEquivalencias.get(clave);
 	}
 	
-	// Persistencia
-	@SuppressWarnings("unchecked")
-	public void recuperarDatos() {
-		if (this.ficheroUsuarios.exists() && this.ficheroEquivalencias.exists()) {
-			try {
-				FileInputStream fis = new FileInputStream(ficheroUsuarios);
-				ObjectInputStream ois = new ObjectInputStream(fis);
-				datosUsuarios = (ArrayList<Identificable>) ois.readObject();
 
-				FileInputStream fis2 = new FileInputStream(ficheroEquivalencias);
-				ObjectInputStream ois2 = new ObjectInputStream(fis2);
-				mapaEquivalencias = (HashMap<String, String>) ois2.readObject();
-				return;
-
-			} 
-			catch (IOException | ClassNotFoundException e) {}
-		} 
-		borrarTodo();
-	}
-
-	@Override
-	public void guardarDatos() {
-		try {
-			FileOutputStream fos = new FileOutputStream(ficheroUsuarios);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(datosUsuarios);
-			oos.close();
-
-			FileOutputStream fos2 = new FileOutputStream(ficheroEquivalencias);
-			ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
-			oos2.writeObject(mapaEquivalencias);
-			oos2.close();
-		} 
-		catch (IOException e) { }
-	}
-
-	public int getSize() {
-		return datosUsuarios.size();
-	}
-	
+	/**
+	 * Metodo que busca un usuario dado su identificador de usuario
+	 * @param id - Identificador de usuario
+	 * @return Usuario - Si lo encuentra o null si no.
+	 */
 	@Override
 	public Usuario obtener(String id) {
 		assert id != null;
@@ -116,18 +96,31 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		return null;
 	}
 
+	/**
+	 * Metodo que busca si un usuario se encuentra en el arraylist de usuarios utilizando la sobrecarga de metodos
+	 * @param obj - Objeto a buscar
+	 * @return obj - Si el objeto se encuentra o null si no.
+	 */
 	@Override
 	public Usuario obtener(Object obj) {
 		assert obj != null;
 		return this.obtener(((Usuario)obj).getId());
 	}
 	
-	@SuppressWarnings("rawtypes")
+	/**
+	 * Metodo que obtiene el arraylist que contiene todos los usuario del programa
+	 * @return datosUsuarios - Arraylist que contiene todos los usuarios del programa
+	 */
 	@Override
 	public List obtenerTodos() {
 		return datosUsuarios;
 	}
 
+	/**
+	 * Metodo que da de alta un usuario en el programa
+	 * @param obj - Usuario a dar de alta
+	 * @throws DatosException - Si el usuario ya estaba dado de alta en nuestra aplicación
+	 */
 	@Override
 	public void alta(Object obj) throws DatosException {
 		assert obj != null;
@@ -148,6 +141,11 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		}
 	}
 
+	/**
+	 * Metodo que elimina un usuario de nuestro programa dado su id de usuario
+	 * @param id - Identificador del Usuario a borrar
+	 * @throws DatosException - Si el usuario no existe
+	 */
 	@Override
 	public Usuario baja(String id) throws DatosException {
 		assert id != null;
@@ -165,6 +163,10 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		}
 	}
 
+	/**
+	 * Metodo que borra el contenido del arraylist usuarios, del mapa de equivalencias y carga 
+	 * los datos predeterminados del programa
+	 */
 	@Override
 	public void borrarTodo() {
 		datosUsuarios.clear();
@@ -173,12 +175,11 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		
 	}
 	
-	@Override
-	public void cerrar() {
-		guardarDatos();
-		
-	}
-
+	/**
+	 * Metodo que actualiza datos en el array de usuarios y en el mapa de equivalencias
+	 * @param obj - Objeto a actualizar en el programa
+	 * @throws DatosException - Excepción si el usuario no existe
+	 */
 	@Override
 	public void actualizar(Object obj) throws DatosException {
 		assert obj != null;
@@ -200,6 +201,11 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		
 	}
 
+	/**
+	 * Metodo que genera una cadena de caracteres con 
+	 * los atributos de todos los usuarios del programa
+	 * @return texto - Cadena de caracteres con los datos de todos los usuarios
+	 */
 	@Override
 	public String listarDatos() {
 		StringBuilder sb = new StringBuilder();
@@ -212,6 +218,11 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 
 	}
 
+	/**
+	 * Metodo que genera una cadena de caracteres que contiene los 
+	 * identificadores de usuarios de todos los usuarios del programa
+	 * @return Id - Ids de los usuarios
+	 */
 	@Override
 	public String listarId() {
 		StringBuilder sb = new StringBuilder();
@@ -236,7 +247,7 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 	/**
 	 * Metodo que produce un idUsr diferente en caso de coincidencia
 	 * @param usr - Usuario en sesion
-	 * @throws DatosException
+	 * @throws DatosException - Excepción si el usuario no existe
 	 */
 	private void producirVarianteIdUsr(Usuario usr) throws DatosException {
 		int posicionInsercion;
@@ -262,6 +273,10 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 	}
 
 
+	/**
+	 * Metodo que se usa para cargar los datos predeterminados del programa, con el 
+	 * usuario administrador y el invitado
+	 */
 	public void cargarUsuariosPredeterminados() {
 		try {
 
@@ -275,4 +290,67 @@ public class UsuariosDAO extends IndexSort implements OperacionesDAO, Persistent
 		catch (DatosException | ModeloException e) {}
 	}
 
+	/**
+	 * Metodo get que obtiene el tamaño del arraylist de usuarios
+	 * @return arraylist size - Tamaño del arraylist de Usuarios
+	 */
+	public int getSize() {
+		return datosUsuarios.size();
+	}
+	
+
+	/* PERSISTENCIA */
+	
+	/**
+	 * Metodo que se encargará de deserializar (recomponer) de nuevo cada objeto a partir de los bits
+	 * recibidos desde un flujo (stream) de entrada procedente del fichero de datos.
+	 */
+	public void recuperarDatos() {
+		if (this.ficheroUsuarios.exists() && this.ficheroEquivalencias.exists()) {
+			try {
+				FileInputStream fis = new FileInputStream(ficheroUsuarios);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				datosUsuarios = (ArrayList<Identificable>) ois.readObject();
+
+				FileInputStream fis2 = new FileInputStream(ficheroEquivalencias);
+				ObjectInputStream ois2 = new ObjectInputStream(fis2);
+				mapaEquivalencias = (HashMap<String, String>) ois2.readObject();
+				return;
+
+			} 
+			catch (IOException | ClassNotFoundException e) {}
+		} 
+		borrarTodo();
+	}
+
+	/**
+	 * Metodo que se encargará de serializar los bits de cada elemento del ArrayList 
+	 * de datos para enviarlo a través de un flujo (stream) de salida a un fichero
+	 */
+	@Override
+	public void guardarDatos() {
+		try {
+			FileOutputStream fos = new FileOutputStream(ficheroUsuarios);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(datosUsuarios);
+			oos.close();
+
+			FileOutputStream fos2 = new FileOutputStream(ficheroEquivalencias);
+			ObjectOutputStream oos2 = new ObjectOutputStream(fos2);
+			oos2.writeObject(mapaEquivalencias);
+			oos2.close();
+		} 
+		catch (IOException e) { }
+	}
+	
+	/**
+	 * Metodo que cierra las conexiones y guarda las nuevas configuraciones
+	 */
+	@Override
+	public void cerrar() {
+		guardarDatos();
+		
+	}
+
+	
 } // Class UsuariosDAO

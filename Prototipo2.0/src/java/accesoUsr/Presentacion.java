@@ -65,7 +65,7 @@ public class Presentacion {
 				clave = new ClaveAcceso();
 				clave = new ClaveAcceso(teclado.nextLine());
 
-				usrEnSesion = datos.buscarUsuario(datos.getUsuariosDAO().getEquivalenciaId(id));
+				usrEnSesion = datos.obtenerUsuario(datos.getUsuariosDAO().getEquivalenciaId(id));
 
 				Usuario aux = new Usuario();
 				aux.setClaveAcceso(new ClaveAcceso(clave));

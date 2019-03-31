@@ -36,7 +36,7 @@ public class JVPrincipal {
 			datos = new Datos();
 			interfazUsr = new Presentacion();
 			
-			System.out.println(datos.toStringTodosUsuarios());
+			System.out.println(datos.toStringDatosUsuarios());
 
 			if (interfazUsr.inicioSesionCorrecto()) {
 
@@ -45,8 +45,8 @@ public class JVPrincipal {
 				sesion.setFecha(new Fecha());
 				datos.altaSesion(sesion);
 
-				interfazUsr.getSimulacion().setMundo(datos.buscarMundo("Demo1"));
-				datos.altaSimulacion(interfazUsr.getSimulacion());
+				interfazUsr.getSimulacion().setMundo(datos.obtenerMundo("Demo1"));
+				datos.altaSimulaciones(interfazUsr.getSimulacion());
 
 				System.out.println("Sesión: " + datos.getSesionesRegistradas() + '\n' + "Iniciada por: "
 						+ interfazUsr.getUsrEnSesion().getNombre() + " " + interfazUsr.getUsrEnSesion().getApellidos());
