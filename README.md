@@ -125,3 +125,5 @@ Hay que completar los siguientes detalles:
 
 ## UML
 ![alt_text](https://github.com/RamonMR95/Prototipo2.0/blob/master/img/modelo2.0-Dise%C3%B1oClases%20(ControlarAcceso)(Simulacion).jpg)
+
+Ramón Moñino Rubio
