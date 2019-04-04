@@ -130,6 +130,7 @@ public class Datos {
 	public void borrarTodosUsuarios() {
 		usuariosDAO.borrarTodo();
 	}
+	
 
 	// SESIONES
 	
@@ -215,6 +216,10 @@ public class Datos {
 	 */
 	public void borrarTodasSesiones() {
 		sesionesDAO.borrarTodo();
+	}
+	
+	public List<Identificable> obtenerSesionesUsuario(String idUsr) throws ModeloException{
+		return sesionesDAO.obtenerTodasMismoUsr(idUsr);
 	}
 
 	// SIMULACIONES

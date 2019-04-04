@@ -13,6 +13,7 @@ import accesoDato.DatosException;
 import accesoDato.OperacionesDAO;
 import config.Configuracion;
 import modelo.Identificable;
+import modelo.ModeloException;
 import modelo.SesionUsuario;
 
 /** Proyecto: Juego de la vida.
@@ -255,4 +256,23 @@ public class SesionesDAO extends IndexSort implements OperacionesDAO, Persistent
 	public void cerrar() {
 		guardarDatos();
 	}
+	
+
+	private List<Identificable> separarSesionesUsr(int ultima) {
+		String idUsr = ((SesionUsuario)datosSesiones.get(ultima)).getUsr().getId();
+		int primera = ultima;
+		
+		for (int i = ultima; i >= 0 && ((SesionUsuario)datosSesiones.get(i)).getUsr().getId().equals(idUsr); i++) {
+			primera = i;
+		}
+		return datosSesiones.subList(primera, ultima + 1);
+	}
+	
+	public List<Identificable> obtenerTodasMismoUsr(String idUsr) throws ModeloException {
+		assert idUsr != null;
+		SesionUsuario aux = new SesionUsuario();
+		aux.setUsr(UsuariosDAO.get().obtener(idUsr));
+		return separarSesionesUsr(indexSort(aux.getId(), datosSesiones) -1 );
+	}
+
 } // Class SesionesDAO
